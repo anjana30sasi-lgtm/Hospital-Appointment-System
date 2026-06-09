@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<body>
+    
+    <h1>Books in the Library</h1>
+    <ul>
+        <table border="1">
+            <tr>
+                <th> Sl No</th>
+                <th> Title</th>
+                <th>Author</th>
+                <th>Price</th>
+                <th>Published Date</th>
+            </tr>
+            {% for book in books %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ book.title }}</td>
+                <td>{{ book.author }}</td>
+                <td>Rs. {{book.price }}</td>
+                <td>{{ book.published_date }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </ul>
+
+</body>
+{% endblock %}

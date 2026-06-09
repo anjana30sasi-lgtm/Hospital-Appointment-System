@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Prescription and Notes</h1>
+   {% for appointment in appointments %}
+  <div>
+
+        <p>
+            <strong>Doctor:</strong>
+            {{ appointment.doctor }}
+        </p>
+
+        <p>
+            <strong>Notes:</strong>
+            {{ appointment.notes }}
+        </p>
+
+        <p>
+            <strong>Prescription:</strong>
+            {{ appointment.prescription }}
+        </p>
+
+        <hr>
+
+    </div>
+
+{% empty %}
+
+    <p>No prescription available.</p>
+
+{% endfor %}
+
+{% endblock %}

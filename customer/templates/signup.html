@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<body>
+    <h2>Sign Up</h2>
+    <form method="post" novalidate>
+        {% csrf_token %}
+        <!---<label for="email">Email:</label>
+        <input type="text" id="email" name="email" required><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required><br><br>-->
+        <div>
+            {{form.as_p}}
+        </div>
+        <button type="submit">Sign up</button>
+    </form>
+</body>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Hospital Appointment System</h2>
+
+<p>Welcome to Hospital Appointment System</p>
+
+<a href="{% url 'patient_register' %}">
+    Patient Registration
+</a>
+
+<br><br>
+
+<a href="{% url 'signin' %}">
+    Login
+</a>
+
+{% endblock %}

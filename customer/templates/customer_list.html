@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<body>
+    <h1>Library Management System</h1>
+    <h2>Customer List</h2>
+
+<button>
+    <a href="{% url 'home' %}">Back to Home (Named URL)</a>
+</button>
+
+<button>
+    <a href="/">Back to Home (Relative URL)</a>
+</button>
+
+</body>
+{% endblock %}

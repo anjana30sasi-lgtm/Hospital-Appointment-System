@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<body>
+   <h2>Home</h2>
+    <!---<button>
+        <a href="/customer-list/">View Customers (Relative   URL)</a>
+    </button>
+    <button>
+        <a href="{% url 'customer_list' %}">View Customers (Named URL)</a>
+    </button>
+
+    <form action="{% url 'customer_list' %}" method="get">
+        <button type="submit">View Customers (Form Submit)</button>
+    </form>
+   <a href="{% url 'signup' %}">Sign Up</a>
+   <a href="{% url 'signin' %}">Sign In</a>
+    <a href="{% url 'signout' %}">Sign Out</a>
+    <a href="{% url 'view_users' %}">View Users</a>
+</body>-->
+<p>This is the home page.</p>
+
+{% if user.is_authenticated %}
+
+    {% if user.is_superuser %}
+        <a href="{% url 'add_book' %}">Add Book</a><br><br>
+        <a href="{% url 'view_users' %}">View Users</a><br><br>
+    {% endif %}
+
+    <a href="{% url 'view_books' %}">View Books</a><br><br>
+    <a href="{% url 'signout' %}">Sign Out</a>
+
+{% else %}
+
+    <a href="{% url 'signup' %}">Sign Up</a><br><br>
+    <a href="{% url 'signin' %}">Sign In</a>
+
+{% endif %}
+{% endblock %}

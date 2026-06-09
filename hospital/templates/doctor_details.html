@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Doctor Details</h1>
+
+<table border="1">
+
+    <tr>
+        <th>Name</th>
+        <th>Department</th>
+        <th>Specialization</th>
+        <th>Email</th>
+        <th>Phone</th>
+    </tr>
+
+    {% for doctor in doctors %}
+    <tr>
+        <td>{{ doctor.name }}</td>
+        <td>{{ doctor.department }}</td>
+        <td>{{ doctor.specialization }}</td>
+        <td>{{ doctor.email }}</td>
+        <td>{{ doctor.phone }}</td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+{% endblock %}

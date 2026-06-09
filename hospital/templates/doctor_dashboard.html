@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Doctor Dashboard</h1>
+
+<h3>Welcome Doctor</h3>
+
+<a href="{% url 'doctor_appointments' %}">
+    View Appointments
+</a>
+
+<br><br>
+
+<a href="{% url 'patient_details' %}">
+    View Patient Details
+</a>
+
+<br><br>
+
+<a href="{% url 'update_notes' %}">
+    Update Consultation Notes
+</a>
+
+<br><br>
+
+<a href="{% url 'add_prescription' %}">
+    Add Prescription
+</a>
+
+<br><br>
+
+<a href="{% url 'manage_availability' %}">
+    Manage Availability
+</a>
+
+<br><br>
+
+<a href="{% url 'signout' %}">
+    Logout
+</a>
+
+{% endblock %}

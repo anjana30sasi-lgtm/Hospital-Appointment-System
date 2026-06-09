@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<body>
+    <h1>Add Book Page</h1>
+    <form method="post">
+        {% csrf_token %}
+       <!-- <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required><br><br>
+        <label for="author">Author:</label>
+        <input type="text" id="author" name="author" required><br><br>
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price" required><br><br>
+        <label for="published_date">Published date:</label>
+        <input type="date" id="published_date" name="published_date" required><br><br>
+        <input type="submit" value="Add Book"> -->
+
+        {{form.as_p }}
+        <button type="submit">Save</button>
+        <a href="{% url 'home' %}">Cancel</a>
+    </form>
+</body>
+{% endblock %}
