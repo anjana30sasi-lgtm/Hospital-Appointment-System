@@ -1,18 +1,55 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block content %}
 
-<h2>Hospital Appointment System</h2>
+<div class="hero">
 
-<p>Welcome to Hospital Appointment System</p>
+    <div class="hero-content">
 
-<a href="{% url 'patient_register' %}">
-    Patient Registration
-</a>
+        <h1>Your Health,<br> Our Priority</h1>
 
-<br><br>
+        <p>
+            Book appointments with specialists, manage schedules,
+            and access hospital services online.
+        </p>
 
-<a href="{% url 'signin' %}">
-    Login
-</a>
+        <a href="{% url 'signin' %}" class="login-btn">
+            Login
+        </a>
+
+    </div>
+
+    <div class="hero-image">
+
+        <img src="{% static 'images/doctor.jpg' %}" alt="Doctors">
+
+    </div>
+
+</div>
+
+<div class="features">
+
+    <div class="feature-card">
+        <h3>📅 Book Appointments</h3>
+        <p>Schedule appointments quickly and easily.</p>
+    </div>
+
+    <div class="feature-card">
+        <h3>👨‍⚕️ Expert Doctors</h3>
+        <p>Consult experienced doctors from various departments.</p>
+    </div>
+
+    <div class="feature-card">
+        <h3>⏰ Save Time</h3>
+        <p>Manage appointments online without waiting in queues.</p>
+    </div>
+
+    <div class="feature-card">
+        <h3>🔒 Secure Records</h3>
+        <p>Your appointment details and records are safely stored.</p>
+    </div>
+
+</div>
 
 {% endblock %}

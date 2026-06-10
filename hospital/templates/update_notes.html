@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Update Consultation Notes</h2>
+
+<p><strong>Patient:</strong> {{ appointment.patient }}</p>
+
+<p><strong>Doctor:</strong> {{ appointment.doctor }}</p>
+
+<form method="post">
+
+    {% csrf_token %}
+
+    <textarea
+        name="notes"
+        rows="5"
+        cols="50"
+    >{{ appointment.notes }}</textarea>
+
+    <br><br>
+
+    <button type="submit">
+        Save Notes
+    </button>
+
+</form>
+
+{% endblock %}

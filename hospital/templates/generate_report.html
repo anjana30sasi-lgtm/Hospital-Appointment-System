@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Hospital Report</h2>
+
+<p><strong>Total Patients:</strong> {{ total_patients }}</p>
+
+<p><strong>Total Doctors:</strong> {{ total_doctors }}</p>
+
+<p><strong>Total Appointments:</strong> {{ total_appointments }}</p>
+
+<hr>
+
+<h3>Appointment Details</h3>
+
+<table border="1">
+
+    <tr>
+        <th>Patient</th>
+        <th>Doctor</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Status</th>
+    </tr>
+
+    {% for appointment in appointments %}
+    <tr>
+        <td>{{ appointment.patient }}</td>
+        <td>{{ appointment.doctor }}</td>
+        <td>{{ appointment.appointment_date }}</td>
+        <td>{{ appointment.appointment_time }}</td>
+        <td>{{ appointment.status }}</td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+<br>
+
+<a href="{% url 'admin_dashboard' %}">
+    Back to Dashboard
+</a>
+
+{% endblock %}

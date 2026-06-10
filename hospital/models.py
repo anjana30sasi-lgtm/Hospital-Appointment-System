@@ -57,3 +57,17 @@ class Appointment(models.Model):
 
     def __str__(self):
         return f"{self.patient.name} - {self.doctor.name}"
+class Availability(models.Model):
+    doctor = models.ForeignKey(
+        Doctor,
+        on_delete=models.CASCADE
+    )
+
+    date = models.DateField()
+
+    status = models.CharField(
+        max_length=20
+    )
+
+    def __str__(self):
+        return f"{self.doctor} - {self.date} - {self.status}"   

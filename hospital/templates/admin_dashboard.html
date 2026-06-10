@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+
+<h2 class="dashboard-title">Admin Dashboard</h2>
+
+<div class="dashboard">
+
+    <div class="card">
+        <a href="{% url 'add_department' %}">Add Department</a>
+        <p>Create new hospital departments</p>
+    </div>
+
+    <div class="card">
+        <a href="{% url 'view_departments' %}">View Departments</a>
+        <p>Manage department records</p>
+    </div>
+
+    <div class="card">
+        <a href="{% url 'add_doctor' %}">Add Doctor</a>
+        <p>Add doctor details and login</p>
+    </div>
+
+    <div class="card">
+        <a href="{% url 'view_doctors' %}">View Doctors</a>
+        <p>View all registered doctors</p>
+    </div>
+
+    <div class="card">
+        <a href="{% url 'view_patients' %}">View Patients</a>
+        <p>View patient information</p>
+    </div>
+
+    <div class="card">
+        <a href="{% url 'view_appointments' %}">View Appointments</a>
+        <p>Monitor appointments</p>
+    </div>
+
+    <div class="card">
+        <a href="{% url 'generate_report' %}">Generate Report</a>
+        <p>Hospital statistics and reports</p>
+    </div>
+
+    <div class="card">
+        <a href="{% url 'signout' %}">Logout</a>
+        <p>Exit the system</p>
+    </div>
+
+</div>
+
+</div>
+
+{% endblock %}

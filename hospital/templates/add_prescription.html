@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Add Prescription</h2>
+
+<p><strong>Patient:</strong> {{ appointment.patient }}</p>
+
+<p><strong>Doctor:</strong> {{ appointment.doctor }}</p>
+
+<form method="post">
+
+    {% csrf_token %}
+
+    <textarea
+        name="prescription"
+        rows="5"
+        cols="50"
+    >{{ appointment.prescription }}</textarea>
+
+    <br><br>
+
+    <button type="submit">
+        Save Prescription
+    </button>
+
+</form>
+
+{% endblock %}

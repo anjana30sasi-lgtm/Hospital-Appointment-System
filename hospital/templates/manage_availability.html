@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Manage Availability</h2>
+
+<form method="post">
+
+    {% csrf_token %}
+
+    <label>Doctor</label><br>
+
+    <select name="doctor_id">
+
+        {% for doctor in doctors %}
+        <option value="{{ doctor.id }}">
+            {{ doctor.name }}
+        </option>
+        {% endfor %}
+
+    </select>
+
+    <br><br>
+
+    <label>Date</label><br>
+
+    <input type="date" name="date">
+
+    <br><br>
+
+    <label>Status</label><br>
+
+    <select name="status">
+
+        <option value="Available">
+            Available
+        </option>
+
+        <option value="Not Available">
+            Not Available
+        </option>
+
+        <option value="On Leave">
+            On Leave
+        </option>
+
+    </select>
+
+    <br><br>
+
+    <button type="submit">
+        Save
+    </button>
+
+</form>
+
+{% endblock %}

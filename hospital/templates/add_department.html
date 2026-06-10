@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2 class="form-title">Add Department</h2>
+<p class="form-subtitle">
+    Create a new department for the hospital.
+</p>
+<form method="post">
+    {% csrf_token %}
+
+    <label>Department Name</label><br>
+    <input type="text"
+       name="name"
+       placeholder="Enter department name">
+
+    <br><br>
+
+    <button type="submit">
+        Save
+    </button>
+
+</form>
+
+{% endblock %}

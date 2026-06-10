@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h1>Doctor Appointments</h1>
+<h2>Doctor Appointments</h2>
 
 <table border="1">
 
@@ -12,15 +12,32 @@
         <th>Date</th>
         <th>Time</th>
         <th>Status</th>
+        <th>Actions</th>
     </tr>
 
     {% for appointment in appointments %}
     <tr>
+
         <td>{{ appointment.patient }}</td>
         <td>{{ appointment.doctor }}</td>
         <td>{{ appointment.appointment_date }}</td>
         <td>{{ appointment.appointment_time }}</td>
         <td>{{ appointment.status }}</td>
+
+        <td>
+
+            <a href="{% url 'update_notes' appointment.id %}">
+                Update Notes
+            </a>
+
+            <br><br>
+
+            <a href="{% url 'add_prescription' appointment.id %}">
+                Add Prescription
+            </a>
+
+        </td>
+
     </tr>
     {% endfor %}
 
