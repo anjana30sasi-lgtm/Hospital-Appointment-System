@@ -2,28 +2,56 @@
 
 {% block content %}
 
-<h2>Update Consultation Notes</h2>
+<h2 class="form-title">
+    Update Consultation Notes
+</h2>
 
-<p><strong>Patient:</strong> {{ appointment.patient }}</p>
+<div class="info-card">
 
-<p><strong>Doctor:</strong> {{ appointment.doctor }}</p>
+    <p>
+        <strong>Patient:</strong>
+        {{ appointment.patient.name }}
+    </p>
+
+    <p>
+        <strong>Doctor:</strong>
+        {{ appointment.doctor.name }}
+    </p>
+
+    <p>
+        <strong>Date:</strong>
+        {{ appointment.appointment_date }}
+    </p>
+
+</div>
 
 <form method="post">
 
     {% csrf_token %}
 
+    <label>
+        Consultation Notes
+    </label>
+
     <textarea
         name="notes"
-        rows="5"
-        cols="50"
+        rows="6"
+        placeholder="Enter consultation notes here..."
     >{{ appointment.notes }}</textarea>
-
-    <br><br>
 
     <button type="submit">
         Save Notes
     </button>
 
 </form>
+
+<div style="text-align:center; margin-top:20px;">
+
+    <a href="{% url 'doctor_appointments' %}"
+       class="add-btn">
+        Back to Appointments
+    </a>
+
+</div>
 
 {% endblock %}

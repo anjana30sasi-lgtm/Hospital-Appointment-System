@@ -3,7 +3,7 @@
 {% block title %}Patient Registration{% endblock %}
 
 {% block content %}
-  <h2>Patient Registration</h2>
+  <h2 class="form-title">Patient Registration</h2>
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}

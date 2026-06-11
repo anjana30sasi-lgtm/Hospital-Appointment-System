@@ -1,18 +1,43 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block content %}
-<h2>Book Appointment</h2>
+
+<h2 class="form-title">Book Appointment</h2>
 
 <form method="post">
 
     {% csrf_token %}
 
-    {{ form.as_p }}
+    <p>
+        <label>Department</label>
+        {{ form.department }}
+    </p>
+
+    <p>
+        <label>Doctor</label>
+        {{ form.doctor }}
+    </p>
+
+    <p>
+        <label>Appointment Date</label>
+        {{ form.appointment_date }}
+    </p>
+
+    <p>
+        <label>Appointment Time</label>
+        {{ form.appointment_time }}
+    </p>
 
     <button type="submit">
-        Book Appointment
+        Confirm Appointment
     </button>
 
 </form>
+
+<script>
+document.getElementById("id_department").onchange = function(){
+    this.form.submit();
+};
+</script>
 
 {% endblock %}

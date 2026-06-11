@@ -1,16 +1,44 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Appointment Status</h1>
-    <ul>
+
+<h2 class="page-title">Appointment Status</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Doctor</th>
+            <th>Department</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+
+    <tbody>
         {% for appointment in appointments %}
-            <li>
-                <strong>Department:</strong> {{ appointment.doctor.department }}<br>
-                <strong>Doctor:</strong> {{ appointment.doctor }}<br>
-                <strong>Date:</strong> {{ appointment.appointment_date }}<br>
-                <strong>Time:</strong> {{ appointment.appointment_time }}
-                <strong>Status:</strong>{{ appointment.status }}
-            </li>
+        <tr>
+            <td>{{ appointment.doctor.name }}</td>
+            <td>{{ appointment.doctor.department.name }}</td>
+            <td>{{ appointment.appointment_date }}</td>
+            <td>{{ appointment.appointment_time }}</td>
+
+            <td>
+                {% if appointment.status == "Pending" %}
+                    ⏳ Pending
+                {% elif appointment.status == "Approved" %}
+                    ✅ Approved
+                {% elif appointment.status == "Completed" %}
+                    ✔ Completed
+                {% else %}
+                    ❌ Cancelled
+                {% endif %}
+            </td>
+
+        </tr>
         {% endfor %}
-    </ul>
+    </tbody>
+
+</table>
+
 {% endblock %}

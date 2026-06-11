@@ -2,28 +2,56 @@
 
 {% block content %}
 
-<h2>Add Prescription</h2>
+<h2 class="form-title">
+    Add Prescription
+</h2>
 
-<p><strong>Patient:</strong> {{ appointment.patient }}</p>
+<div class="info-card">
 
-<p><strong>Doctor:</strong> {{ appointment.doctor }}</p>
+    <p>
+        <strong>Patient:</strong>
+        {{ appointment.patient.name }}
+    </p>
+
+    <p>
+        <strong>Doctor:</strong>
+        {{ appointment.doctor.name }}
+    </p>
+
+    <p>
+        <strong>Date:</strong>
+        {{ appointment.appointment_date }}
+    </p>
+
+</div>
 
 <form method="post">
 
     {% csrf_token %}
 
+    <label>
+        Prescription
+    </label>
+
     <textarea
         name="prescription"
-        rows="5"
-        cols="50"
+        rows="6"
+        placeholder="Enter prescription here..."
     >{{ appointment.prescription }}</textarea>
-
-    <br><br>
 
     <button type="submit">
         Save Prescription
     </button>
 
 </form>
+
+<div style="text-align:center; margin-top:20px;">
+
+    <a href="{% url 'doctor_appointments' %}"
+       class="add-btn">
+        Back to Appointments
+    </a>
+
+</div>
 
 {% endblock %}

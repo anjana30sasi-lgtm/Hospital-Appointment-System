@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h2>Manage Availability</h2>
+<h2 class="form-title">Manage Availability</h2>
 
 <form method="post">
 
@@ -10,16 +10,12 @@
 
     <label>Doctor</label><br>
 
-    <select name="doctor_id">
 
-        {% for doctor in doctors %}
-        <option value="{{ doctor.id }}">
-            {{ doctor.name }}
-        </option>
-        {% endfor %}
-
-    </select>
-
+<input
+    type="text"
+    value="{{ doctor.name }}"
+    readonly
+>
     <br><br>
 
     <label>Date</label><br>

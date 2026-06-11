@@ -1,8 +1,8 @@
 
 from django.shortcuts import render,redirect    
 from django.contrib.auth import authenticate, login, logout
-from .forms import Doctor, patientRegisterForm,LoginForm,AppointmentForm
-from .models import Appointment, Availability, Department, Patient
+from .forms import  patientRegisterForm,LoginForm,AppointmentForm
+from .models import Appointment, Availability, Department, Patient, Doctor
 from django.contrib.auth.models import User    
 # Create your views here.
 def home(request):
@@ -13,8 +13,16 @@ def patient_register(request):
     if request.method == "POST":
         form = patientRegisterForm(request.POST)
         if form.is_valid():
-            form.save()
-            return render(request,'home.html')
+
+            patient = form.save()
+
+            User.objects.create_user(
+        username=patient.email,
+        email=patient.email,
+        password=form.cleaned_data['password']
+    )
+
+            return redirect('home')
     return render(request,'patient_register.html',{"form":form})
 def signin(request):
 
@@ -61,50 +69,115 @@ def signin(request):
         {'form': form}
     )
 def patient_dashboard(request):
-    return render(request,'patient_dashboard.html')
+    return render(request,'patient_dashboard.html',{'patient_name': request.user.username})
+
 def book_appointment(request):
-    form = AppointmentForm()
+
+    form = AppointmentForm(request.POST or None)
+
     if request.method == "POST":
-        form = AppointmentForm(request.POST)
+
         if form.is_valid():
-            department = form.cleaned_data["department"]
+
             doctor = form.cleaned_data["doctor"]
             appointment_date = form.cleaned_data["appointment_date"]
             appointment_time = form.cleaned_data["appointment_time"]
 
-            # Save the appointment to the database
-            appointment = Appointment(
-                patient=request.user.patient,  # Assuming you have a Patient model linked to the User model
-                doctor=doctor,
-                department=department,
-                appointment_date=appointment_date,
-                appointment_time=appointment_time
+            patient = Patient.objects.get(
+                email=request.user.email
             )
-            appointment.save()
 
-            return redirect('patient_dashboard')  # Redirect to the dashboard after booking
+            availability = Availability.objects.filter(
+                doctor=doctor,
+                date=appointment_date,
+                status="Available"
+            ).exists()
 
-    return render(request, 'book_appointment.html', {'form': form})
-def appointment_status(request):
-    appointments=Appointment.objects.all()
-    return render(request,'appointment_status.html',{'appointments':appointments})
+            if not availability:
+
+                form.add_error(
+                    None,
+                    "Doctor is not available on this date"
+                )
+
+            else:
+
+                already_booked = Appointment.objects.filter(
+                    doctor=doctor,
+                    appointment_date=appointment_date,
+                    appointment_time=appointment_time
+                ).exists()
+
+                if already_booked:
+
+                    form.add_error(
+                        None,
+                        "This time slot is already booked"
+                    )
+
+                else:
+
+                    Appointment.objects.create(
+                        patient=patient,
+                        doctor=doctor,
+                        appointment_date=appointment_date,
+                        appointment_time=appointment_time
+                    )
+
+                    return redirect('patient_dashboard')
+
+    return render(
+        request,
+        'book_appointment.html',
+        {'form': form}
+    )
+
 def prescription(request):
-    appointments=Appointment.objects.all()
-    return render(request,'prescription.html',{'appointments':appointments})
+
+    patient = Patient.objects.get(
+        email=request.user.email
+    )
+
+    appointments = Appointment.objects.filter(
+        patient=patient
+    )
+
+    return render(
+        request,
+        'prescription.html',
+        {'appointments': appointments}
+    )
 def doctor_details(request):
     doctors = Doctor.objects.all()
     return render(request, 'doctor_details.html', {'doctors': doctors})
+
 def signout(request):
     logout(request)
     return redirect('home')
+
 def doctor_dashboard(request):
     return render(request,'doctor_dashboard.html')
+
 def doctor_appointments(request):
-    appointments=Appointment.objects.all() 
-    return render(request, 'doctor_appointments.html', {'appointments': appointments}   )
+
+    doctor = Doctor.objects.get(
+        email=request.user.email
+    )
+
+    appointments = Appointment.objects.filter(
+        doctor=doctor
+    )
+
+    return render(
+        request,
+        'doctor_appointments.html',
+        {'appointments': appointments}
+    )
+
 def patient_details(request):
     patients = Patient.objects.all()
     return render(request,'patient_details.html')
+
 def update_notes(request, appointment_id):
     appointment = Appointment.objects.get(id=appointment_id)
     if request.method == "POST":
@@ -113,26 +186,55 @@ def update_notes(request, appointment_id):
         appointment.save()
         return redirect('doctor_appointments')
     return render(request, 'update_notes.html', {'appointment': appointment})
+
 def add_prescription(request, appointment_id):
-    appointment = Appointment.objects.get(id=appointment_id)
+
+    appointment = Appointment.objects.get(
+        id=appointment_id
+    )
+
     if request.method == "POST":
-        prescription = request.POST.get('prescription')
-        appointment.prescription = prescription
+
+        appointment.prescription = request.POST.get(
+            'prescription'
+        )
+
+        appointment.status = "Completed"
+
         appointment.save()
-        return redirect('doctor_appointments')
-    return render(request, 'add_prescription.html', {'appointment': appointment})
+
+        return redirect(
+            'doctor_appointments'
+        )
+
+    return render(
+        request,
+        'add_prescription.html',
+        {'appointment': appointment}
+    )
+
 def manage_availability(request):
-    # Logic to manage doctor availability
+
+    doctor = Doctor.objects.get(
+        email=request.user.email
+    )
+
     if request.method == "POST":
-        doctor=Doctor.objects.get(id=request.POST.get('doctor_id'))
+
         Availability.objects.create(
             doctor=doctor,
             date=request.POST.get('date'),
             status=request.POST.get('status')
         )
+
         return redirect('doctor_dashboard')
-    doctors = Doctor.objects.all()
-    return render(request, 'manage_availability.html', {'doctors': doctors})
+
+    return render(
+        request,
+        'manage_availability.html',
+        {'doctor': doctor}
+    )
+
 def admin_dashboard(request):
     return render(request,'admin_dashboard.html')
 
@@ -208,3 +310,12 @@ def generate_report(request):
         'appointments': appointments
     }
     return render(request, 'generate_report.html', context)
+def appointment_status(request):
+
+    appointments = Appointment.objects.all()
+
+    return render(
+        request,
+        'appointment_status.html',
+        {'appointments': appointments}
+    )

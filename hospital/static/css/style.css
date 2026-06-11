@@ -406,3 +406,24 @@ select{
     border-radius:8px;
     box-sizing:border-box;
 }
+table tr:hover{
+    background:#e0ecff;
+    transition:0.3s;
+}
+.search-box{
+    width:300px;
+    margin-bottom:20px;
+}
+.info-card{
+    background:white;
+    max-width:600px;
+    margin:20px auto;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+.info-card p{
+    margin:10px 0;
+    font-size:16px;
+}

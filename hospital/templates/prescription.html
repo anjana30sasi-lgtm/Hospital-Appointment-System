@@ -1,32 +1,33 @@
 {% extends 'base.html' %}
+
 {% block content %}
-    <h1>Prescription and Notes</h1>
-   {% for appointment in appointments %}
-  <div>
 
-        <p>
-            <strong>Doctor:</strong>
-            {{ appointment.doctor }}
-        </p>
+<h2 class="page-title">Prescription & Notes</h2>
 
-        <p>
-            <strong>Notes:</strong>
-            {{ appointment.notes }}
-        </p>
+<table>
+    <thead>
+        <tr>
+            <th>Doctor</th>
+            <th>Notes</th>
+            <th>Prescription</th>
+        </tr>
+    </thead>
 
-        <p>
-            <strong>Prescription:</strong>
-            {{ appointment.prescription }}
-        </p>
-
-        <hr>
-
-    </div>
-
-{% empty %}
-
-    <p>No prescription available.</p>
-
-{% endfor %}
+    <tbody>
+        {% for appointment in appointments %}
+        <tr>
+            <td>{{ appointment.doctor.name }}</td>
+            <td>{{ appointment.notes }}</td>
+            <td>{{ appointment.prescription }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3">
+                No prescriptions available
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
 {% endblock %}
