@@ -312,7 +312,13 @@ def generate_report(request):
     return render(request, 'generate_report.html', context)
 def appointment_status(request):
 
-    appointments = Appointment.objects.all()
+    patient = Patient.objects.get(
+        email=request.user.email
+    )
+
+    appointments = Appointment.objects.filter(
+        patient=patient
+    )
 
     return render(
         request,
