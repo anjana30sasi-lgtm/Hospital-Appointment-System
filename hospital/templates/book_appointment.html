@@ -4,6 +4,12 @@
 
 <h2 class="form-title">Book Appointment</h2>
 
+{% if form.non_field_errors %}
+<div style="color:red; margin-bottom:15px;">
+    {{ form.non_field_errors }}
+</div>
+{% endif %}
+
 <form method="post">
 
     {% csrf_token %}
@@ -35,9 +41,40 @@
 </form>
 
 <script>
-document.getElementById("id_department").onchange = function(){
+
+// Department → Doctor Filtering
+document.getElementById("id_department").addEventListener("change", function () {
     this.form.submit();
-};
+});
+
+
+// Doctor → Available Dates (Flatpickr)
+document.getElementById("id_doctor").addEventListener("change", function () {
+
+    let doctorId = this.value;
+
+    if (doctorId != "") {
+
+        fetch("/doctor-dates/" + doctorId + "/")
+
+        .then(response => response.json())
+
+        .then(function (availableDates) {
+
+            flatpickr("#id_appointment_date", {
+
+                dateFormat: "Y-m-d",
+
+                enable: availableDates
+
+            });
+
+        });
+
+    }
+
+});
+
 </script>
 
 {% endblock %}

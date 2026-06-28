@@ -4,6 +4,11 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import  patientRegisterForm,LoginForm,AppointmentForm
 from .models import Appointment, Availability, Department, Patient, Doctor
 from django.contrib.auth.models import User    
+from django.http import JsonResponse
+from django.http import HttpResponse
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet
 # Create your views here.
 def home(request):
     return render(request,'home.html')
@@ -77,6 +82,8 @@ def book_appointment(request):
 
     if request.method == "POST":
 
+        print("POST DATA:", request.POST)
+
         if form.is_valid():
 
             doctor = form.cleaned_data["doctor"]
@@ -93,6 +100,8 @@ def book_appointment(request):
                 status="Available"
             ).exists()
 
+            print("Availability:", availability)
+
             if not availability:
 
                 form.add_error(
@@ -107,6 +116,8 @@ def book_appointment(request):
                     appointment_date=appointment_date,
                     appointment_time=appointment_time
                 ).exists()
+
+                print("Already Booked:", already_booked)
 
                 if already_booked:
 
@@ -124,7 +135,13 @@ def book_appointment(request):
                         appointment_time=appointment_time
                     )
 
+                    print("Appointment Saved Successfully")
+
                     return redirect('patient_dashboard')
+
+        else:
+
+            print("Form Errors:", form.errors)
 
     return render(
         request,
@@ -173,10 +190,34 @@ def doctor_appointments(request):
         'doctor_appointments.html',
         {'appointments': appointments}
     )
+def view_patients(request):
 
-def patient_details(request):
     patients = Patient.objects.all()
-    return render(request,'patient_details.html')
+
+    return render(
+        request,
+        'view_patients.html',
+        {
+            'patients': patients
+        }
+    )
+def patient_details(request):
+
+    doctor = Doctor.objects.get(
+        email=request.user.email
+    )
+
+    patients = Patient.objects.filter(
+        appointment__doctor=doctor
+    ).distinct()
+
+    return render(
+        request,
+        'patient_details.html',
+        {
+            'patients': patients
+        }
+    )
 
 def update_notes(request, appointment_id):
     appointment = Appointment.objects.get(id=appointment_id)
@@ -325,3 +366,63 @@ def appointment_status(request):
         'appointment_status.html',
         {'appointments': appointments}
     )
+def doctor_available_dates(request, doctor_id):
+
+    dates = Availability.objects.filter(
+        doctor_id=doctor_id,
+        status="Available"
+    )
+
+    available_dates = []
+
+    for d in dates:
+
+        available_dates.append(
+            d.date.strftime("%Y-%m-%d")
+        )
+
+    return JsonResponse(
+        available_dates,
+        safe=False
+    )
+def download_report(request):
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="hospital_report.pdf"'
+
+    doc = SimpleDocTemplate(response)
+
+    styles = getSampleStyleSheet()
+
+    elements = []
+
+    elements.append(Paragraph("<b>Hospital Appointment System Report</b>", styles["Title"]))
+
+    data = [["Patient", "Doctor", "Date", "Time", "Status"]]
+
+    appointments = Appointment.objects.all()
+
+    for a in appointments:
+        data.append([
+            a.patient.name,
+            a.doctor.name,
+            str(a.appointment_date),
+            str(a.appointment_time),
+            a.status
+        ])
+
+    table = Table(data)
+
+    table.setStyle(TableStyle([
+        ('BACKGROUND',(0,0),(-1,0),colors.blue),
+        ('TEXTCOLOR',(0,0),(-1,0),colors.white),
+        ('GRID',(0,0),(-1,-1),1,colors.black),
+        ('BACKGROUND',(0,1),(-1,-1),colors.beige),
+        ('ALIGN',(0,0),(-1,-1),'CENTER')
+    ]))
+
+    elements.append(table)
+
+    doc.build(elements)
+
+    return response

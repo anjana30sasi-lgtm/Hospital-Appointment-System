@@ -36,9 +36,13 @@ class AppointmentForm(forms.Form):
     queryset=Doctor.objects.none(),
     empty_label="Choose Doctor"
 )
-
     appointment_date = forms.DateField(
-    widget=forms.DateInput(attrs={'type': 'date'})
+    widget=forms.DateInput(
+        attrs={
+            'type': 'text',
+            'id': 'id_appointment_date'
+        }
+    )
 )
 
     appointment_time = forms.TimeField(

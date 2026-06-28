@@ -24,4 +24,14 @@ urlpatterns = [
    path('view-patients/',views.view_patients,name='view_patients'),
    path('view-appointments/',views.view_appointments,name='view_appointments'),
    path('generate-report/',views.generate_report,name='generate_report'),
+   path(
+    'doctor-dates/<int:doctor_id>/',
+    views.doctor_available_dates,
+    name='doctor_available_dates'
+),
+path(
+    'download-report/',
+    views.download_report,
+    name='download_report'
+),
 ]

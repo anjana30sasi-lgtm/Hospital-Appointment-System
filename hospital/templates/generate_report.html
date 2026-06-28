@@ -9,7 +9,9 @@
 <p><strong>Total Doctors:</strong> {{ total_doctors }}</p>
 
 <p><strong>Total Appointments:</strong> {{ total_appointments }}</p>
-
+<a href="{% url 'download_report' %}" class="add-btn">
+    Download PDF Report
+</a>
 <hr>
 
 <h3>Appointment Details</h3>

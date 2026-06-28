@@ -2,13 +2,12 @@
 
 {% block content %}
 
-<h2>Doctor Appointments</h2>
+<h2 class="page-title">Doctor Appointments</h2>
 
-<table border="1">
+<table>
 
     <tr>
         <th>Patient</th>
-        <th>Doctor</th>
         <th>Date</th>
         <th>Time</th>
         <th>Status</th>
@@ -16,29 +15,65 @@
     </tr>
 
     {% for appointment in appointments %}
+
     <tr>
 
-        <td>{{ appointment.patient }}</td>
-        <td>{{ appointment.doctor }}</td>
+        <td>{{ appointment.patient.name }}</td>
+
         <td>{{ appointment.appointment_date }}</td>
+
         <td>{{ appointment.appointment_time }}</td>
-        <td>{{ appointment.status }}</td>
 
         <td>
 
-            <a href="{% url 'update_notes' appointment.id %}">
-                Update Notes
-            </a>
+            {% if appointment.status == "Completed" %}
 
-            <br><br>
+                <span style="color:green;font-weight:bold;">
+                    Completed
+                </span>
 
-            <a href="{% url 'add_prescription' appointment.id %}">
-                Add Prescription
-            </a>
+            {% else %}
+
+                <span style="color:orange;font-weight:bold;">
+                    Pending
+                </span>
+
+            {% endif %}
+
+        </td>
+
+        <td>
+
+            {% if appointment.status == "Pending" %}
+
+                <a href="{% url 'update_notes' appointment.id %}">
+                    Update Notes
+                </a>
+
+                <br><br>
+
+                <a href="{% url 'add_prescription' appointment.id %}">
+                    Add Prescription
+                </a>
+
+            {% else %}
+
+                <span style="color:green;font-weight:bold;">
+                    Appointment Completed
+                </span>
+
+            {% endif %}
 
         </td>
 
     </tr>
+
+    {% empty %}
+
+    <tr>
+        <td colspan="5">No Appointments Found</td>
+    </tr>
+
     {% endfor %}
 
 </table>
